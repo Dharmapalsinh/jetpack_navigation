@@ -1,0 +1,11 @@
+package com.dharmapal.jetpack_navigation.Models
+
+
+import com.google.gson.annotations.SerializedName
+
+data class Channel(
+    @SerializedName("link")
+    val link: String?,
+    @SerializedName("name")
+    val name: String?
+)
