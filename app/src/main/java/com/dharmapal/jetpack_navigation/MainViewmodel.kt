@@ -1,12 +1,19 @@
 package com.dharmapal.jetpack_navigation
 
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.dharmapal.jetpack_navigation.Models.MovieResult
 import com.dharmapal.jetpack_navigation.Models.Movies
 import com.dharmapal.jetpack_navigation.Models.PeopleAlsoWatched
 import com.dharmapal.jetpack_navigation.Models.VideoResult
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,7 +23,7 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
     val errorMessage = MutableLiveData<String>()
     val movielist=MutableLiveData<List<VideoResult>>()
     val reletedMovieList=MutableLiveData<List<PeopleAlsoWatched>>()
-
+    val usernamelist=MutableLiveData<List<User>>()
 
     fun getmovies(){
         val response=repository.getmovies()
@@ -30,6 +37,33 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
                 errorMessage.postValue(t.message)
             }
         })
+    }
+
+    fun addUserData(username:String, password:String,email:String,phone:Int,context: Context){
+        val db= UserDatabase.getDatabase(context)
+        val dao=db.dao()
+        runBlocking(Dispatchers.IO){
+            dao.addUser(User(username = username, password = password, email = email, phone = phone))
+        }
+    }
+
+    fun getUserdata(context: Context){
+
+        val db= UserDatabase.getDatabase(context)
+        val dao=db.dao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val data=dao.getUsers().toString()
+            val data2=dao.getUsers()
+            withContext(Dispatchers.Main){
+                val list= mutableListOf<User>()
+                data2.forEach {
+                    list.add(it)
+                }
+                usernamelist.postValue(list)
+                Log.d("uname",data)
+            }
+        }
     }
 
 }

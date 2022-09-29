@@ -2,27 +2,37 @@ package com.dharmapal.jetpack_navigation
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.dharmapal.gatetouch_task.Retrofit.RetrofitService
+import com.dharmapal.jetpack_navigation.MainViewmodel
+import com.dharmapal.jetpack_navigation.MainViewmodelFactory
+import com.dharmapal.jetpack_navigation.R
+import com.dharmapal.jetpack_navigation.Repo
 import com.dharmapal.jetpack_navigation.databinding.FragmentLogInBinding
 import com.dharmapal.jetpack_navigation.databinding.FragmentRegisterBinding
 
 
 class LogInFragment : Fragment() {
     private lateinit var binding: FragmentLogInBinding
+    private lateinit var viewmodel: MainViewmodel
+    private val retrofitService = RetrofitService.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = FragmentLogInBinding.inflate(inflater)
+        val viewModelFactory= MainViewmodelFactory(Repo(retrofitService))
+        viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
 
         emailFocusListener()
         passwordFocusListener()
-
         binding.tvReg.setOnClickListener {
             findNavController().navigate(R.id.action_logInFragment_to_registerFragment)
         }
@@ -50,8 +60,32 @@ class LogInFragment : Fragment() {
     }
 
     private fun resetForm() {
-        findNavController().navigate(R.id.action_logInFragment_to_homeFragment)
-        Toast.makeText(context, "Login Successfully..!!", Toast.LENGTH_SHORT).show()
+        viewmodel.getUserdata(requireContext())
+
+        Log.d("tagged",viewmodel.usernamelist.value.toString())
+        viewmodel.usernamelist.observe(viewLifecycleOwner){
+            var commonUser=false
+            val filterlist=it.filter {
+                it.email==binding.etEmail.text.toString() && it.password==binding.etPassword.text.toString()
+            }
+
+            if (filterlist.size!=0){
+                commonUser=true
+
+            }
+
+            if (commonUser==true){
+                findNavController().navigate(R.id.action_logInFragment_to_homeFragment)
+                Toast.makeText(context, "Login Successfully..!!", Toast.LENGTH_SHORT).show()
+            }
+
+            else{
+                Toast.makeText(context,"Credentials are Invalid or Incorrect",Toast.LENGTH_SHORT).show()
+            }
+
+
+        }
+
     }
 
     private fun invalidForm() {

@@ -1,20 +1,13 @@
 
 
-import android.graphics.Bitmap
+import android.content.Context
 import android.view.*
 import android.widget.PopupMenu
-import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dharmapal.jetpack_navigation.Models.MovieResult
-import com.dharmapal.jetpack_navigation.Models.Movies
 import com.dharmapal.jetpack_navigation.Models.VideoResult
-import com.dharmapal.jetpack_navigation.Models.diff
 import com.dharmapal.jetpack_navigation.R
 import com.dharmapal.jetpack_navigation.databinding.MovieRowBinding
-import java.nio.file.Files.delete
 
 class MoviesAdapter(val onClick:(VideoResult)->Unit,val onwatchclick:(VideoResult)->Unit): RecyclerView.Adapter<myViewHolder>() {
 
@@ -31,7 +24,9 @@ class MoviesAdapter(val onClick:(VideoResult)->Unit,val onwatchclick:(VideoResul
         holder.binding.tvTitle.text=b1.title
         holder.itemView.setOnClickListener {
 //            onClick(b1)
-            val popup = PopupMenu(holder.itemView.context,holder.binding.tvTitle)
+            val wrapper: Context = ContextThemeWrapper(holder.itemView.context, R.style.popupMenuStyle)
+            val popup = PopupMenu(wrapper,holder.binding.tvTitle)
+
             popup.inflate(R.menu.menufilecontext)
             popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
                 override fun onMenuItemClick(item: MenuItem): Boolean {

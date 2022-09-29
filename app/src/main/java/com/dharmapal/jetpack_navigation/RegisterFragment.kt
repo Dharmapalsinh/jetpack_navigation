@@ -2,25 +2,32 @@ package com.dharmapal.jetpack_navigation
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.dharmapal.gatetouch_task.Retrofit.RetrofitService
 import com.dharmapal.jetpack_navigation.databinding.FragmentLogInBinding
 import com.dharmapal.jetpack_navigation.databinding.FragmentRegisterBinding
 
 
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
+    private lateinit var viewmodel: MainViewmodel
+    private val retrofitService = RetrofitService.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRegisterBinding.inflate(inflater)
+        val viewModelFactory=MainViewmodelFactory(Repo(retrofitService))
+        viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
 
         usernameFocusListener()
         emailFocusListener()
@@ -56,8 +63,29 @@ class RegisterFragment : Fragment() {
     }
 
     private fun resetForm() {
-        findNavController().navigate(R.id.action_registerFragment_to_logInFragment)
-        Toast.makeText(context, "Register Successfully..!!", Toast.LENGTH_SHORT).show()
+        viewmodel.getUserdata(requireContext())
+        viewmodel.usernamelist.observe(viewLifecycleOwner){
+            Log.d("third",it.toString())
+            var commonUser=false
+            val filterlist=it.filter {
+                it.email==binding.etEmail1.text.toString()
+            }
+            if (filterlist.size!=0){
+                commonUser=true
+            }
+            if (commonUser){
+                binding.etEmail1.error="User name already Registered"
+            }
+            else{
+                viewmodel.addUserData(binding.etUsername1.text.toString(),binding.etPassword1.text.toString(),binding.etEmail1.text.toString()
+                    ,binding.etPone1.text.toString().toInt(),requireContext())
+                Toast.makeText(context, "Register Successfully..!!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+            }
+        }
+
+
+
     }
 
     private fun invalidForm() {
