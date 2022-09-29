@@ -43,5 +43,11 @@
         <argument
             android:name="title"
             app:argType="string" />
+        <action
+            android:id="@+id/action_movieDetailFragment_self"
+            app:destination="@id/movieDetailFragment" />
+        <argument
+            android:name="title2"
+            app:argType="string" />
     </fragment>
 </navigation>

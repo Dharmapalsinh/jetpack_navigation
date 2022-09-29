@@ -5,17 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dharmapal.jetpack_navigation.Models.MovieResult
 import com.dharmapal.jetpack_navigation.Models.Movies
+import com.dharmapal.jetpack_navigation.Models.PeopleAlsoWatched
 import com.dharmapal.jetpack_navigation.Models.VideoResult
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.InputStream
 
 class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
 
     val errorMessage = MutableLiveData<String>()
     val movielist=MutableLiveData<List<VideoResult>>()
+    val reletedMovieList=MutableLiveData<List<PeopleAlsoWatched>>()
 
 
     fun getmovies(){
@@ -23,6 +23,7 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
         response.enqueue(object :Callback<Movies>{
             override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
                 movielist.postValue(response.body()!!.videoResults!!)
+                reletedMovieList.postValue(response.body()!!.peopleAlsoWatched!!)
             }
 
             override fun onFailure(call: Call<Movies>, t: Throwable) {
@@ -30,8 +31,6 @@ class MainViewmodel constructor(private val repository: Repo)  : ViewModel() {
             }
         })
     }
-
-
 
 }
 

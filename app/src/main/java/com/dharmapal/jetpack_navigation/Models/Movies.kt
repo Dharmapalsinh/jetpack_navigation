@@ -39,3 +39,17 @@ object diff: DiffUtil.ItemCallback<VideoResult>(){
         return oldItem==newItem
     }
 }
+
+object diff1: DiffUtil.ItemCallback<PeopleAlsoWatched>(){
+    override fun areItemsTheSame(oldItem: PeopleAlsoWatched, newItem: PeopleAlsoWatched): Boolean {
+        return oldItem.title==newItem.title
+    }
+
+    override fun areContentsTheSame(
+        oldItem: PeopleAlsoWatched,
+        newItem: PeopleAlsoWatched
+    ): Boolean {
+        return oldItem==newItem
+    }
+
+}
