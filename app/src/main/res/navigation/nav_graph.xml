@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.dharmapal.jetpack_navigation.homeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/logInFragment"
         android:name="com.dharmapal.jetpack_navigation.LogInFragment"
@@ -30,5 +34,14 @@
         <action
             android:id="@+id/action_registerFragment_to_logInFragment"
             app:destination="@id/logInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.dharmapal.jetpack_navigation.MovieDetailFragment"
+        android:label="fragment_movie_detail"
+        tools:layout="@layout/fragment_movie_detail" >
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
 </navigation>

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.dharmapal.gatetouch_task.Retrofit.RetrofitService
 import com.dharmapal.gatetouch_task.Retrofit.RetrofitService.Companion.retrofitService
 import com.dharmapal.jetpack_navigation.databinding.FragmentHomeBinding
@@ -18,7 +19,9 @@ class homeFragment : Fragment() {
     private lateinit var viewmodel: MainViewmodel
     private val retrofitService = RetrofitService.getInstance()
     private lateinit var binding:FragmentHomeBinding
-    private val adapter=MoviesAdapter()
+    private val adapter=MoviesAdapter{
+//        findNavController().navigate(homeFragmentDirections)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

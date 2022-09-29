@@ -13,7 +13,7 @@ import com.dharmapal.jetpack_navigation.Models.VideoResult
 import com.dharmapal.jetpack_navigation.Models.diff
 import com.dharmapal.jetpack_navigation.databinding.MovieRowBinding
 
-class MoviesAdapter: ListAdapter<VideoResult,myViewHolder>(diff) {
+class MoviesAdapter(val onClick:(VideoResult)->Unit): ListAdapter<VideoResult,myViewHolder>(diff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): myViewHolder {
         val inflater= LayoutInflater.from(parent.context)
@@ -25,6 +25,9 @@ class MoviesAdapter: ListAdapter<VideoResult,myViewHolder>(diff) {
         val b1:VideoResult=getItem(position)
         Glide.with(holder.itemView.context).load(b1.thumbnail!!.static).into(holder.binding.ivUserImage)
         holder.binding.tvTitle.text=b1.title
+        holder.itemView.setOnClickListener {
+            onClick(b1)
+        }
     }
 }
 
