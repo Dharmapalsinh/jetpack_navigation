@@ -42,46 +42,61 @@ class MovieDetailFragment : Fragment() {
         viewmodel.getmovies()
 
         viewmodel.movielist.observe(viewLifecycleOwner){
-            val filtered=it.filter {
-                it.title==args.title
-            }
-            if (filtered == null){
+
+            if (it == null){
 
             }else{
-                binding.tvDescription.text=filtered[0].description
-                binding.tvView.text= "${filtered[0].views} Views"
-                binding.tvPbDate.text=filtered[0].publishedDate
-                binding.tvChannelTitle.text = filtered[0].channel!!.name
-                Glide.with(requireContext()).load(filtered[0].channel!!.thumbnail).into(binding.ivChannelThumb)
-                Glide.with(requireContext()).load(filtered[0].thumbnail!!.static).into(binding.ivThumbnail)
+                val filtered=it.filter {
+                    it.title==args.title
+                }
+                if (filtered.isNotEmpty()) {
+                    binding.tvDescription.text = filtered[0].description
+                    binding.tvView.text = "${filtered[0].views} Views"
+                    binding.tvPbDate.text = filtered[0].publishedDate
+                    binding.tvChannelTitle.text = filtered[0].channel!!.name
+                    Glide.with(requireContext()).load(filtered[0].channel!!.thumbnail)
+                        .into(binding.ivChannelThumb)
+                    Glide.with(requireContext()).load(filtered[0].thumbnail!!.static)
+                        .into(binding.ivThumbnail)
 
-                binding.ibPlay.setOnClickListener {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(filtered[0].link))
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
+                    binding.ibPlay.setOnClickListener {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(filtered[0].link))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
                 }
             }
         }
 
         viewmodel.reletedMovieList.observe(viewLifecycleOwner){
-            adapter.submitList(it)
 
-            /*Log.d("data", args.title2)
-            val filtered=it.filter {
-                it.title==args.title
+
+            Log.d("data", args.title2)
+
+            if (it == null){
+
+            }else{
+                adapter.submitList(it)
+                val filtered=it.filter {
+                    it.title==args.title
+                }
+                if (filtered.isNotEmpty()) {
+                    binding.tvDescription.text = filtered[0].description
+                    binding.tvView.text = "${filtered[0].views} Views"
+                    binding.tvPbDate.text = filtered[0].publishedDate
+                    binding.tvChannelTitle.text = filtered[0].channel!!.name
+                    Glide.with(requireContext()).load(filtered[0].channel!!.thumbnail)
+                        .into(binding.ivChannelThumb)
+                    Glide.with(requireContext()).load(filtered[0].thumbnail!!.static)
+                        .into(binding.ivThumbnail)
+
+                    binding.ibPlay.setOnClickListener {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(filtered[0].link))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
+                }
             }
-            binding.tvDescription.text=filtered[0].description
-            binding.tvView.text= "${filtered[0].views} Views"
-            binding.tvPbDate.text=filtered[0].publishedDate
-            binding.tvChannelTitle.text = filtered[0].channel!!.name
-            Glide.with(requireContext()).load(filtered[0].channel!!.thumbnail).into(binding.ivChannelThumb)
-            Glide.with(requireContext()).load(filtered[0].thumbnail!!.static).into(binding.ivThumbnail)
-
-            binding.ibPlay.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(filtered[0].link))
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-            }*/
             binding.rvRelatedMovie.adapter=adapter
         }
         return binding.root
