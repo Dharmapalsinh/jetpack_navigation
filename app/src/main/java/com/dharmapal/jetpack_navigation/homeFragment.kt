@@ -20,7 +20,7 @@ class homeFragment : Fragment() {
     private val retrofitService = RetrofitService.getInstance()
     private lateinit var binding:FragmentHomeBinding
     private val adapter=MoviesAdapter{
-//        findNavController().navigate(homeFragmentDirections)
+        findNavController().navigate(homeFragmentDirections.actionHomeFragmentToMovieDetailFragment(it.title!!))
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
