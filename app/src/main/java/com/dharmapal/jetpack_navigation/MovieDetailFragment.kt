@@ -28,12 +28,18 @@ class MovieDetailFragment : Fragment() {
         findNavController().navigate(MovieDetailFragmentDirections.actionMovieDetailFragmentSelf(it.title!!,it.title))
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentMovieDetailBinding.inflate(inflater)
+
+        binding.btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_movieDetailFragment_to_homeFragment)
+//            findNavController().popBackStack()
+        }
 
         val viewModelFactory=MainViewmodelFactory(Repo(retrofitService))
         viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
@@ -51,7 +57,7 @@ class MovieDetailFragment : Fragment() {
         viewmodel.movielist.observe(viewLifecycleOwner){
 
             if (it == null){
-
+                Log.d("tagged","Movielist empty")
             }else{
                 val filtered=it.filter {
                     it.title==args.title
@@ -81,6 +87,7 @@ class MovieDetailFragment : Fragment() {
 
             if (it == null){
 
+                Log.d("tagged","relatedMovielist empty")
             }else{
                 adapter.submitList(it)
                 val filtered=it.filter {
