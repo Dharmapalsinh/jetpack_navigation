@@ -68,17 +68,13 @@ class LogInFragment : Fragment() {
             val filterlist=it.filter {
                 it.email==binding.etEmail.text.toString() && it.password==binding.etPassword.text.toString()
             }
-
             if (filterlist.size!=0){
                 commonUser=true
-
             }
-
             if (commonUser==true){
                 findNavController().navigate(R.id.action_logInFragment_to_homeFragment)
                 Toast.makeText(context, "Login Successfully..!!", Toast.LENGTH_SHORT).show()
             }
-
             else{
                 Toast.makeText(context,"Credentials are Invalid or Incorrect",Toast.LENGTH_SHORT).show()
             }

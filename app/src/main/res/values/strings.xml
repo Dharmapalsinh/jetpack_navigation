@@ -8,4 +8,6 @@
     <string name="username">Enter Username</string>
     <string name="email">Enter Email</string>
     <string name="phone">Enter Phone No.</string>
+    <string name="register">Register</string>
+    <string name="already_have_an_account_login">Already have an Account? LOGIN</string>
 </resources>

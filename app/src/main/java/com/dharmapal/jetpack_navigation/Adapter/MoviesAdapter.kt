@@ -1,8 +1,10 @@
 
 
 import android.content.Context
+import android.os.Build
 import android.view.*
 import android.widget.PopupMenu
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dharmapal.jetpack_navigation.Models.VideoResult
@@ -18,6 +20,7 @@ class MoviesAdapter(val onClick:(VideoResult)->Unit,val onwatchclick:(VideoResul
         return myViewHolder(binding)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onBindViewHolder(holder: myViewHolder, position: Int) {
         val b1:VideoResult=data[position]
         Glide.with(holder.itemView.context).load(b1.thumbnail!!.static).into(holder.binding.ivUserImage)
@@ -43,6 +46,7 @@ class MoviesAdapter(val onClick:(VideoResult)->Unit,val onwatchclick:(VideoResul
                     }
                 }
             })
+            popup.setForceShowIcon(true)
             popup.show()
         }
 

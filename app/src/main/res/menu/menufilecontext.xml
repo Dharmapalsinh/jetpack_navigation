@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
     <item
-        android:title="Watch"
         android:id="@+id/Watch"
-        >
-    </item>
+        android:title="Watch"
+        android:icon="@drawable/watch"
+        />
+
     <item
-        android:title="View Deatails"
         android:id="@+id/View"
-        >
-    </item>
+        android:title="View Details"
+        android:icon="@drawable/details"/>
 </menu>

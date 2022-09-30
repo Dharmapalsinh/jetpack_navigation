@@ -74,17 +74,17 @@ class RegisterFragment : Fragment() {
                 commonUser=true
             }
             if (commonUser){
-                binding.etEmail1.error="User name already Registered"
+                binding.etEmail1.error="Email already Registered"
             }
             else{
-                viewmodel.addUserData(binding.etUsername1.text.toString(),binding.etPassword1.text.toString(),binding.etEmail1.text.toString()
-                    ,binding.etPone1.text.toString().toInt(),requireContext())
+                viewmodel.addUserData(binding.etUsername1.text.toString(),
+                    binding.etPassword1.text.toString(),
+                    binding.etEmail1.text.toString() ,
+                    binding.etPone1.text.toString().toInt(),requireContext())
                 Toast.makeText(context, "Register Successfully..!!", Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
             }
         }
-
-
 
     }
 

@@ -4,18 +4,18 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.dharmapal.gatetouch_task.Retrofit.RetrofitService
 import com.dharmapal.jetpack_navigation.Adapter.ReletedMoviesAdapter
-import com.dharmapal.jetpack_navigation.databinding.FragmentLogInBinding
 import com.dharmapal.jetpack_navigation.databinding.FragmentMovieDetailBinding
 
 class MovieDetailFragment : Fragment() {
@@ -38,9 +38,16 @@ class MovieDetailFragment : Fragment() {
         val viewModelFactory=MainViewmodelFactory(Repo(retrofitService))
         viewmodel= ViewModelProvider(this,viewModelFactory)[MainViewmodel::class.java]
 
+        val callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.action_movieDetailFragment_to_homeFragment)
+
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,callback)
+
         binding.tvTitle.text = args.title
         viewmodel.getmovies()
-
         viewmodel.movielist.observe(viewLifecycleOwner){
 
             if (it == null){
@@ -70,7 +77,6 @@ class MovieDetailFragment : Fragment() {
 
         viewmodel.reletedMovieList.observe(viewLifecycleOwner){
 
-
             Log.d("data", args.title2)
 
             if (it == null){
@@ -97,10 +103,13 @@ class MovieDetailFragment : Fragment() {
                     }
                 }
             }
+
+
             binding.rvRelatedMovie.adapter=adapter
         }
         return binding.root
     }
+
 
 
 }
