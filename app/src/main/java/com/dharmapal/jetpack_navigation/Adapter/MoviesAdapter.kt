@@ -48,6 +48,8 @@ class MoviesAdapter(val onClick:(VideoResult)->Unit,val onwatchclick:(VideoResul
             })
             popup.setForceShowIcon(true)
             popup.show()
+
+
         }
 
     }
